@@ -61,7 +61,7 @@ VALUES
 
 	  -- 1. What is the total amount each customer spent at the restaurant?
 
-	  --To write this query i summed the price to get the total  and i joined the ssalea and menu table based on mutual colums iin order to get the match the customers and the total amount spent by them 
+	  --To write this query i summed the price to get the total and i joined the sales and menu table based on mutual colums.
 SELECT S.customer_id, SUM(price) AS total_sales
 FROM menu M
 LEFT JOIN sales S ON M.product_id = S.product_id
@@ -72,7 +72,7 @@ ORDER BY total_sales DESC
 
 
 -- 2. How many days has each customer visited the restaurant?
--- To solve this i counted the neccesary colmns gave it an alias,and group it by the customer id in orde to avoid duplicates of the id
+-- To solve this i counted the neccesary colmns gave it an alias,and group it by the customer id in order to avoid repeated count of the ids
 SELECT COUNT(*) AS no_of_times_visited, customer_id 
 FROM sales
 group by customer_id
@@ -80,7 +80,7 @@ Order by no_of_times_visited DESC
 
 
 -- 3. What was the first item from the menu purchased by each customer?
---To solve this i first passed on an alias and 
+--To solve this i used window functions and joins as well as passing on some alias.
 SELECT X.*, M.product_name
 FROM (
     SELECT s.*,
@@ -93,7 +93,7 @@ WHERE X.first_item_ordered = 1;
 
 -- 4. What is the most purchased item on the menu and how many times was it purchased by all customers?
 
---i counted how many times a product name  showed up, and i joined it with the menu table so it can extract the names of the product usin th product id 
+--i counted how many times a product name  showed up, and i joined it with the menu table so it can extract the names of the product using the product id 
 SELECT product_name, COUNT(*) AS purchase_count
 FROM sales
 INNER JOIN menu
@@ -103,7 +103,7 @@ ORDER BY COUNT(*) DESC;
 
 
 -- 5. Which item was the most popular for each customer?
---To achive the correct result for this question I thought the best approach will be to use subquery or nested query as well as some window and aggregates functions with the appropriate barrangement 
+--To achive the correct result for this question I thought the best approach will be to use subquery or nested query as well as some window and aggregates functions with the appropriate arrangement 
  
  SELECT customer_id, product_count,product_name
 FROM (
@@ -156,7 +156,7 @@ WHERE row_num = 1;
 
 --8) What is the total items and amount spent for each member before they became a member?
 
---i used sum and count along side the distinct keyword to firstto aum the price and to count the product id witgount duplication of count and then i joined the neccesary tables and grouped by the customer id
+--i used sum and count along side the distinct keyword to first to sum the price, and to count the product id without duplication of count, and then i joined the neccesary tables and grouped by the customer id.
 
 	SELECT  s.customer_id, 
 SUM(m.price) AS total_price, 
@@ -173,8 +173,8 @@ GROUP BY  s.customer_id
 		 
 --9)If each $1 spent equates to 10 points and sushi has a 2x points multiplier - how many points would each customer have?
 
---case statements isthe most efficient for a question like this because we want to get a certsain result if the condition meets a certain criteria. 
---so after the case statement i joined the neccesary table to get ther equired result
+--case statements is the most efficient for a question like this because we want to get a certain result if the condition meets a certain criteria. 
+--so after the case statement i joined the neccesary table to get ther required result
 
 	SELECT sales.customer_id,
 	SUM(
@@ -196,7 +196,7 @@ GROUP BY  s.customer_id
 
 
 ---10) In the first week after a customer joins the program (including their join date) they earn 2x points on all items, not just sushi - how many points do customer A and B have at the end of January
--- i also used case statement and join for theis question 
+-- i also used case statement and join for this question 
 SELECT sales.customer_id,
 	SUM(
     CASE
